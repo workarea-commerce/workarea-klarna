@@ -1,0 +1,16 @@
+module Workarea
+  decorate Payment, with: :klarna do
+    decorated do
+      embeds_one :klarna,
+        class_name: "Workarea::Payment::Tender::Klarna"
+    end
+
+    def eligible_for_klarna?
+      address.present? &&
+        address.country&.continent.present? &&
+        address.country.continent.in?(
+          Workarea.config.klarna_continent_prefixes.keys
+        )
+    end
+  end
+end

@@ -1,0 +1,7 @@
+module Workarea
+  decorate Order, with: :klarna do
+    decorated do
+      field :extra_merchant_data, type: Hash, default: {}
+    end
+  end
+end
