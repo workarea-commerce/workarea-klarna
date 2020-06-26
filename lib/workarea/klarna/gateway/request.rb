@@ -10,14 +10,14 @@ module Workarea
 
         def url
           @url ||= begin
-            subdomain = Workarea.config.klarna_continent_prefixes[continent]
+            subdomain = Workarea.config.klarna_subdomains[continent]
             raise Gateway::ContinentNotSupported.new unless subdomain.present?
 
             host =
               if Workarea.config.klarna_playground
-                "#{subdomain}.playground.klarna.com"
+                "https://#{subdomain}.playground.klarna.com"
               elsif
-                "#{subdomain}.klarna.com"
+                "https://#{subdomain}.klarna.com"
               end
 
             "#{host}/#{path}"

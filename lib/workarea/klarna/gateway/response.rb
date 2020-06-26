@@ -9,7 +9,11 @@ module Workarea
         end
 
         def body
-          JSON.parse(raw_response.body)
+          @body ||= JSON.parse(raw_response.body)
+        end
+
+        def success?
+          raw_response.status.in?([200, 201, 202, 204])
         end
       end
     end

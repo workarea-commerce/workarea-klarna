@@ -1,0 +1,12 @@
+- if step.offer_klarna_payments?
+  - step.klarna_session.payment_method_categories.each do |category|
+    .checkout-payment__primary-method.checkout-payment__primary-method--klarna.checkout-payment__primary-method--new{ class: "checkout-payment__primary-method--klarna_#{category['identifier']}" }
+      .button-property
+        .value{ role: 'radiogroup', aria: { labelledby: 'aria_payment_radiogroup' } }
+          = radio_button_tag 'payment', "klarna_#{category['identifier']}", false, data: { analytics: checkout_payment_selected_analytics_data("klarna_#{category['identifier']}").to_json }
+
+        = label_tag 'payment[klarna]', nil, class: 'button-property__name' do
+          = image_tag(category['asset_urls']['standard'], class: "payment-icon payment-icon--#{category['identifier'].dasherize}", title: category['name'])
+          %span.button-property__text= category['name']
+
+      .checkout-payment__primary-method-edit{ data: { klarna_payment: category['identifier'] }, id: "klarna-payment--#{category['identifier']}"  }

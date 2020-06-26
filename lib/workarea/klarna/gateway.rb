@@ -15,8 +15,8 @@ module Workarea
         # Return null option set
       end
 
-      def update_session(order)
-        request = UpdateSessionRequest.new(order)
+      def update_session(order, session_id = nil)
+        request = UpdateSessionRequest.new(order, session_id)
         send_request(request)
       end
 
@@ -37,16 +37,16 @@ module Workarea
       end
 
       def send_request(request)
-        raw_response = Faraday.send(request.method, request.url) do |request|
-          request.headers['Authorization'] = auth_header
-          request.headers['User-Agent'] = "Workarea/#{Workarea::VERSION::STRING}"
+        raw_response = Faraday.send(request.method, request.url) do |req|
+          req.headers['Authorization'] = auth_header
+          req.headers['User-Agent'] = "Workarea/#{Workarea::VERSION::STRING}"
 
           if request.body.present?
-            request.headers['Content-Type'] = 'application/json'
-            request.body = request.body.to_json
+            req.headers['Content-Type'] = 'application/json'
+            req.body = request.body.to_json
           end
 
-          yield
+          yield if block_given?
         end
 
         Response.new(raw_response)

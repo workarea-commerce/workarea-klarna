@@ -7,7 +7,7 @@ module Workarea
       field :_id, type: String, default: -> { BSON::ObjectId.new.to_s }
       field :session_id, type: String
       field :client_token, type: String
-      field :payment_method_categories, type: Hash, default: {}
+      field :payment_method_categories, type: Array, default: []
 
       index(
         { created_at: 1 },

@@ -1,0 +1,8 @@
+module Workarea
+  decorate Storefront::Checkout::AddressesController, with: :klarna do
+    def completed_addresses_step
+      SetupKlarnaSession.new(current_checkout).perform
+      super
+    end
+  end
+end

@@ -10,7 +10,7 @@ module Workarea
         end
 
         def body
-          Gateway::Order.new(order, payment: payment).to_hash
+          Gateway::Order.new(order, payment: payment).to_h
         end
       end
     end
