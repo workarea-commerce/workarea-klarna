@@ -4,6 +4,19 @@ module Workarea
       embeds_one :klarna, class_name: "Workarea::Payment::Tender::Klarna"
     end
 
+    def set_klarna(attrs)
+      build_klarna unless klarna
+      klarna.attributes = attrs.slice(
+        :authorization_token,
+        :payment_method_category
+      )
+      save
+    end
+
+    def clear_klarna
+      self.klarna = nil
+    end
+
     def eligible_for_klarna?
       address.present? &&
         address.country&.continent.present? &&

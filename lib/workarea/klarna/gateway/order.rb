@@ -4,7 +4,7 @@ module Workarea
       class Order
         attr_reader :order
 
-        def initialize(order, payment: nil, shippings: shippings)
+        def initialize(order, payment: nil, shippings: nil)
           @order = order
           @payment = payment
           @shippings = shippings
@@ -114,6 +114,8 @@ module Workarea
           return unless shippings.present? && shippings.all?(&:shipping_service)
 
           shipping_total = order.shipping_total.cents
+          return if shipping_total.zero?
+
           shipping_tax = price_adjustments
                           .adjusting('tax')
                           .select { |pa| !!pa.data['shipping_service_tax'] }
@@ -175,9 +177,7 @@ module Workarea
               Workarea::Storefront::Engine
                 .routes
                 .url_helpers
-                .checkout_confirmation_url(
-                  host: Workarea.config.host
-                )
+                .checkout_confirmation_url(host: Workarea.config.host)
           }
         end
       end

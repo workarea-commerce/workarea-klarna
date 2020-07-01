@@ -1,1 +1,5 @@
 en:
+  workarea:
+    storefront:
+      checkouts:
+        klarna_authorizing_message: Authorizing Klarna Payment...

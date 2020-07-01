@@ -10,7 +10,10 @@ module Workarea
         end
 
         def body
-          Gateway::Order.new(order, payment: payment).to_h
+          Gateway::Order
+            .new(order, payment: payment)
+            .to_h
+            .except(:shipping_address, :billing_address)
         end
       end
     end

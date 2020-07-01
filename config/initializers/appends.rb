@@ -4,11 +4,6 @@ Workarea::Plugin.append_partials(
 )
 
 Workarea::Plugin.append_partials(
-  'storefront.checkout_payment_top',
-  'workarea/storefront/checkouts/klarna_session'
-)
-
-Workarea::Plugin.append_partials(
   'storefront.payment_method',
   'workarea/storefront/checkouts/klarna_payments'
 )

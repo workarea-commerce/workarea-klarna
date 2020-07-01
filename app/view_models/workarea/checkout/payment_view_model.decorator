@@ -15,11 +15,10 @@ module Workarea
         .attributes
         .slice('client_token', 'payment_method_categories')
         .merge(
-          order: Klarna::Gateway::Order.new(
-            order,
-            payment: payment,
-            shippings: shippings
-          ).to_h
+          order: Klarna::Gateway::Order
+                  .new(order, payment: payment, shippings: shippings)
+                  .to_h
+                  .except(:merchant_urls)
         )
     end
   end

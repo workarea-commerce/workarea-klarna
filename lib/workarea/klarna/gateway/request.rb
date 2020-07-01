@@ -16,7 +16,7 @@ module Workarea
             host =
               if Workarea.config.klarna_playground
                 "https://#{subdomain}.playground.klarna.com"
-              elsif
+              else
                 "https://#{subdomain}.klarna.com"
               end
 
