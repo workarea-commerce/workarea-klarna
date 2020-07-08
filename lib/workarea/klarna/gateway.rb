@@ -12,7 +12,7 @@ module Workarea
         request = CreateSessionRequest.new(order)
         send_request(request)
       rescue ContinentNotSupported
-        # Return null option set
+        Response.new(request, nil)
       end
 
       def update_session(order, session_id = nil)
@@ -20,19 +20,28 @@ module Workarea
         send_request(request)
       end
 
-      def create_order(order)
+      def authorize(tender, amount)
+        request = PlaceOrderRequest.new(tender, amount)
+        send_transaction_request(request)
+      end
+
+      def purchase(tender, amount)
+        request = PlaceOrderRequest.new(order, amount, auto_capture: true)
+        send_transaction_request(request)
+      end
+
+      def capture(tender, amount)
+
+        ActiveMerchant::Billing::Response.new(
+
+        )
+      end
+
+      def refund(tender, amount)
 
       end
 
-      def capture(order_id, amount)
-
-      end
-
-      def refund(order_id, amount)
-
-      end
-
-      def cancel(order_id, data)
+      def cancel(tender, amount = nil)
 
       end
 
@@ -49,7 +58,17 @@ module Workarea
           yield if block_given?
         end
 
-        Response.new(raw_response)
+        Response.new(request, raw_response)
+      end
+
+      def send_transaction_request(request)
+        response = send_request(request)
+
+        ActiveMerchant::Billing::Response.new(
+            response.success?,
+            response.message,
+            response.params
+        )
       end
 
       private

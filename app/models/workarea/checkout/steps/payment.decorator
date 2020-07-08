@@ -7,10 +7,11 @@ module Workarea
       payment_type = params[:payment]
       auth_token = params.fetch(:klarna, {})[:authorization_token]
 
-      return super unless payment_type.starts_with?('klarna') && auth_token.present?
+      return super unless payment_type.to_s.starts_with?('klarna') && auth_token.present?
 
       payment.set_klarna(
         authorization_token: auth_token,
+        authorization_token_expires_at: 60.minutes.from_now,
         payment_method_category: payment_type.sub('klarna_', '')
       )
     end

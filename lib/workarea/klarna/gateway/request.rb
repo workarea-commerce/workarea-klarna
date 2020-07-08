@@ -2,10 +2,13 @@ module Workarea
   module Klarna
     class Gateway
       class Request
-        attr_reader :order, :path, :method
+        attr_reader :order, :summary, :path, :method
 
         def initialize(order)
           @order = order
+          @summary = I18n.t('workarea.klarna.gateway.request.base')
+          @path = '/'
+          @method = 'get'
         end
 
         def url

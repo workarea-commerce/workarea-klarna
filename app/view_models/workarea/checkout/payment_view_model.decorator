@@ -21,5 +21,21 @@ module Workarea
                   .except(:merchant_urls)
         )
     end
+
+    def klarna_selected?
+      payment.klarna&.authorization_token.present?
+    end
+
+    def klarna_payment_category_selected?(category)
+      klarna_selected? && payment.klarna.payment_method_category == category
+    end
+
+    def klarna_expired?
+      klarna_selected? && payment.klarna.authorization_token_expired?
+    end
+
+    def using_new_card?
+      super && !klarna_selected?
+    end
   end
 end

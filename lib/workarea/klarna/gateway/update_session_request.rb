@@ -6,8 +6,10 @@ module Workarea
           super(order)
 
           @session_id = session_id || find_session_id
+
           @path = "payments/v1/sessions/#{@session_id}"
           @method = 'post'
+          @summary = I18n.t('workarea.klarna.gateway.request.update_session')
         end
 
         def body

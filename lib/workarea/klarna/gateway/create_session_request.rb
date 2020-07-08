@@ -7,6 +7,7 @@ module Workarea
 
           @path = 'payments/v1/sessions'
           @method = 'post'
+          @summary = I18n.t('workarea.klarna.gateway.request.create_session')
         end
 
         def body

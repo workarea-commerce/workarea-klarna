@@ -1,13 +1,18 @@
 module Workarea
   decorate Payment, with: :klarna do
     decorated do
-      embeds_one :klarna, class_name: "Workarea::Payment::Tender::Klarna"
+      embeds_one :klarna,
+        class_name: "Workarea::Payment::Tender::Klarna",
+        inverse_of: :payment
+
+      delegate :redirect_url, to: :klarna, allow_nil: true
     end
 
     def set_klarna(attrs)
       build_klarna unless klarna
       klarna.attributes = attrs.slice(
         :authorization_token,
+        :authorization_token_expires_at,
         :payment_method_category
       )
       save

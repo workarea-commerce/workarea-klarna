@@ -47,7 +47,9 @@ module Workarea
             *order.items.map(&method(:format_item)),
             shipping_line,
             discount_line,
-            tax_line
+            tax_line,
+            store_credit_line,
+            gift_card_line,
           ].compact
         end
 
@@ -160,15 +162,40 @@ module Workarea
           }
         end
 
-        def include_tax_line?
-          payment.address.country.alpha2 == 'US'
+        def store_credit_line
+          return unless payment.store_credit&.amount&.positive?
+
+          {
+            name: 'Store Credit',
+            type: 'store_credit',
+            quantity: 1,
+            unit_price: 0,
+            tax_rate: 0,
+            total_tax_amount: 0,
+            total_amount: -1 * payment.store_credit.amount.cents
+          }
         end
 
-        def remove_inline_tax(hash)
-          hash[:order_lines].each do |line|
-            line.delete(:total_tax_amount)
-            line.delete(:tax_rate)
-          end
+        def gift_card_line
+          amount =
+            if payment.respond_to?(:gift_card) &&
+              payment.gift_card&.amount&.cents
+            elsif payment.respond_to?(:gift_cards)
+              payment.gift_cards.sum(&:amount).to_m.cents
+            end
+
+          return unless amount.to_i.positive?
+
+          {
+            name: 'Voucher',
+            reference: 'Voucher',
+            type: 'gift_card',
+            quantity: 1,
+            unit_price: 0,
+            tax_rate: 0,
+            total_tax_amount: 0,
+            total_amount: -1 * amount
+          }
         end
 
         def merchant_urls
@@ -179,6 +206,17 @@ module Workarea
                 .url_helpers
                 .checkout_confirmation_url(host: Workarea.config.host)
           }
+        end
+
+        def include_tax_line?
+          payment.address.country.alpha2 == 'US'
+        end
+
+        def remove_inline_tax(hash)
+          hash[:order_lines].each do |line|
+            line.delete(:total_tax_amount)
+            line.delete(:tax_rate)
+          end
         end
       end
     end
