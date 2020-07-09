@@ -20,8 +20,6 @@ WORKAREA.registerModule('klarnaWidget', (function () {
                 },
                 session.order,
                 function(res) {
-                    console.log(res);
-
                     if (res.approved && res.show_form) {
                         $form.find('#klarna_authorization_token').val(res.authorization_token);
                         $submitButton
