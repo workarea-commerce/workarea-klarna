@@ -1,7 +1,6 @@
 module Workarea
   module Klarna
     class Gateway
-      class RequestError < StandardError; end
       class ContinentNotSupported < StandardError; end
 
       def configured?
@@ -31,18 +30,23 @@ module Workarea
       end
 
       def capture(tender, amount)
-
-        ActiveMerchant::Billing::Response.new(
-
-        )
+        request = CaptureRequest.new(tender, amount)
+        send_transaction_request(request)
       end
 
       def refund(tender, amount)
-
+        request = RefundRequest.new(tender, amount)
+        send_transaction_request(request)
       end
 
-      def cancel(tender, amount = nil)
+      def cancel(tender)
+        request = CancelRequest.new(tender)
+        send_transaction_request(request)
+      end
 
+      def release_authorization(tender)
+        request = ReleaseRequest.new(tender)
+        send_transaction_request(request)
       end
 
       def send_request(request)
@@ -87,25 +91,6 @@ module Workarea
 
       def auth_header
         "Basic #{Base64.encode64([username, password].join(':'))}"
-      end
-
-      def throw_request_error(error)
-        raise RequestError.new(
-          I18n.t(
-            'workarea.klarna.gateway.http_error',
-            status: error.status_code
-          )
-        )
-      end
-
-      def handle_connection_errors
-        begin
-          yield
-        rescue StandardError => error
-          Rails.logger.error(error.message)
-          Rails.logger.error(error.result)
-          throw_request_error(error)
-        end
       end
     end
   end

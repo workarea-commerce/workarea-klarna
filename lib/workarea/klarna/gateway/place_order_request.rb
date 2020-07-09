@@ -14,7 +14,7 @@ module Workarea
           @method = 'post'
           @summary = I18n.t(
             'workarea.klarna.gateway.request.place_order',
-            amount: @amount.to_s
+            amount: @amount.format
           )
         end
 

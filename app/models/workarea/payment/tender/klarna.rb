@@ -16,6 +16,13 @@ module Workarea
           authorization_token_expires_at < Time.current
         end
 
+        def clear_authorization!
+          update!(
+            authorization_token: nil,
+            authorization_token_expires_at: nil
+          )
+        end
+
         def placed_order_data
           txn = transactions.successful.not_canceled.authorizes.first ||
                 transactions.successful.not_canceled.purchases.first

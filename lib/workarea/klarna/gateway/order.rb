@@ -15,13 +15,14 @@ module Workarea
             purchase_country: payment.address.country.alpha2,
             purchase_currency: order.total_price.currency.iso_code,
             locale: I18n.locale,
-            order_amount: order.total_price.cents,
+            order_amount: order_amount,
             order_tax_amount: order.tax_total.cents,
             order_lines: order_lines,
             billing_address: billing_address,
             shipping_address: shipping_address,
             merchant_urls: merchant_urls,
-            merchant_reference1: order.id
+            merchant_reference1: order.id,
+            attachment: extra_merchant_data
           }
             .compact
             .tap { |hash| remove_inline_tax(hash) if include_tax_line? }
@@ -41,6 +42,13 @@ module Workarea
         end
 
         private
+
+        def order_amount
+          raw_total = order.total_price
+          tenders = gift_cards + [store_credit]
+
+          (raw_total - tenders.compact.sum(&:amount).to_m).cents
+        end
 
         def order_lines
           [
@@ -162,36 +170,44 @@ module Workarea
           }
         end
 
+        def store_credit
+          payment.store_credit
+        end
+
         def store_credit_line
-          return unless payment.store_credit&.amount&.positive?
+          return unless store_credit&.amount&.positive?
 
           {
             name: 'Store Credit',
             type: 'store_credit',
             quantity: 1,
-            unit_price: 0,
+            unit_price: -1 * store_credit.amount.cents,
             tax_rate: 0,
             total_tax_amount: 0,
-            total_amount: -1 * payment.store_credit.amount.cents
+            total_amount: -1 * store_credit.amount.cents
           }
         end
 
+        def gift_cards
+          if payment.respond_to?(:gift_card) &&
+            [payment.gift_card].compact
+          elsif payment.respond_to?(:gift_cards)
+            payment.gift_cards.sum(&:amount)
+          else
+            []
+          end
+        end
+
         def gift_card_line
-          amount =
-            if payment.respond_to?(:gift_card) &&
-              payment.gift_card&.amount&.cents
-            elsif payment.respond_to?(:gift_cards)
-              payment.gift_cards.sum(&:amount).to_m.cents
-            end
+          amount = gift_cards.sum(&:amount)
 
           return unless amount.to_i.positive?
 
           {
-            name: 'Voucher',
-            reference: 'Voucher',
+            name: 'Gift Card',
             type: 'gift_card',
             quantity: 1,
-            unit_price: 0,
+            unit_price: -1 * amount,
             tax_rate: 0,
             total_tax_amount: 0,
             total_amount: -1 * amount
@@ -217,6 +233,15 @@ module Workarea
             line.delete(:total_tax_amount)
             line.delete(:tax_rate)
           end
+        end
+
+        def extra_merchant_data
+          return unless order.extra_merchant_data.present?
+
+          {
+            body: order.extra_merchant_data.to_json,
+            content_type: 'application/vnd.klarna.internal.emd-v2+json'
+          }
         end
       end
     end

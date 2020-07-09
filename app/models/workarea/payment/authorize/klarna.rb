@@ -9,8 +9,11 @@ module Workarea
             Workarea::Klarna.gateway.authorize(tender, transaction.amount)
         end
 
-        def cancel! # TODO
+        def cancel!
+          return unless transaction.success?
+
           transaction.cancellation = Workarea::Klarna.gateway.cancel(tender)
+          tender.clear_authorization!
         end
       end
     end

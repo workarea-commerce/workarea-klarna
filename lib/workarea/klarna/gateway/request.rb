@@ -11,6 +11,8 @@ module Workarea
           @method = 'get'
         end
 
+        def body; end
+
         def url
           @url ||= begin
             subdomain = Workarea.config.klarna_subdomains[continent]

@@ -9,8 +9,11 @@ module Workarea
             Workarea::Klarna.gateway.purchase(tender, transaction.amount)
         end
 
-        def cancel! # TODO
-          transaction.cancellation = Workarea::Klarna.gateway.cancel(tender)
+        def cancel!
+          return unless transaction.success?
+
+          transaction.cancellation =
+            Workarea::Klarna.gateway.refund(tender, transaction.amount)
         end
       end
     end
