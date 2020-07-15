@@ -26,3 +26,4 @@ en:
         response:
           success: '%{summary} was successful'
           failure: Request to Klarna was not successful. %{summary}
+          unsupported_continent: The continent "%{continent}" associated to this request is either unknown or not supported.

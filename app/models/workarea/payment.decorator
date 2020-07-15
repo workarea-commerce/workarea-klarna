@@ -26,7 +26,7 @@ module Workarea
       address.present? &&
         address.country&.continent.present? &&
         address.country.continent.in?(
-          Workarea.config.klarna_subdomains.keys
+          Workarea.config.klarna_continent_keys.keys
         )
     end
   end

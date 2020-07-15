@@ -3,15 +3,9 @@ module Workarea
     class Gateway
       class ContinentNotSupported < StandardError; end
 
-      def configured?
-        username.present? && password.present?
-      end
-
       def create_session(order)
         request = CreateSessionRequest.new(order)
         send_request(request)
-      rescue ContinentNotSupported
-        Response.new(request, nil)
       end
 
       def update_session(order, session_id = nil)
@@ -50,8 +44,10 @@ module Workarea
       end
 
       def send_request(request)
+        request.validate!
+
         raw_response = Faraday.send(request.method, request.url) do |req|
-          req.headers['Authorization'] = auth_header
+          req.headers['Authorization'] = auth_header(request)
           req.headers['User-Agent'] = "Workarea/#{Workarea::VERSION::STRING}"
 
           if request.body.present?
@@ -63,6 +59,8 @@ module Workarea
         end
 
         Response.new(request, raw_response)
+      rescue ContinentNotSupported
+        unsupported_continent_response(request)
       end
 
       def send_transaction_request(request)
@@ -77,20 +75,19 @@ module Workarea
 
       private
 
-      def username
-        ENV['WORKAREA_KLARNA_USERNAME'].presence ||
-          Rails.application.credentials.klarna.try(:[], :username) ||
-          Workarea.config.klarna_username
+      def auth_header(request)
+        "Basic #{Base64.encode64([request.username, request.password].join(':'))}"
       end
 
-      def password
-        ENV['WORKAREA_KLARNA_PASSWORD'].presence ||
-          Rails.application.credentials.klarna.try(:[], :password) ||
-          Workarea.config.klarna_password
-      end
-
-      def auth_header
-        "Basic #{Base64.encode64([username, password].join(':'))}"
+      def unsupported_continent_response(request)
+        OpenStruct.new(
+          success?: false,
+          message: I18n.t(
+            'workarea.klarna.gateway.unsupported_continent',
+            continent: request.continent
+          ),
+          params: {}
+        )
       end
     end
   end
