@@ -54,8 +54,6 @@ module Workarea
             req.headers['Content-Type'] = 'application/json'
             req.body = request.body.to_json
           end
-
-          yield if block_given?
         end
 
         Response.new(request, raw_response)
