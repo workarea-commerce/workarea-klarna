@@ -12,8 +12,17 @@ module Workarea
           :klarna
         end
 
+        def authorization_token=(val)
+          if val.present? && authorization_token != val
+            self.authorization_token_expires_at = 1.hour.from_now
+          end
+
+          super
+        end
+
         def authorization_token_expired?
-          authorization_token_expires_at < Time.current
+          authorization_token.present? &&
+            authorization_token_expires_at < Time.current
         end
 
         def clear_authorization!
@@ -25,7 +34,7 @@ module Workarea
 
         def placed_order_data
           txn = transactions.successful.not_canceled.authorizes.first ||
-                transactions.successful.not_canceled.purchases.first
+                transactions.successful.not_canceled.captures_or_purchased.first
 
           return {} unless txn.present?
           txn.response.params

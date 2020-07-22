@@ -7,7 +7,6 @@ en:
             title: Klarna
     storefront:
       checkouts:
-        klarna_authorizing_message: Authorizing Klarna Payment...
         klarna_payment_received: Your Klarna payment has been approved. Click 'Place Order' to purchase.
         klarna_payment_expired: Your Klarna payment approval has expired.
       orders:

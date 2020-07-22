@@ -1,5 +1,5 @@
 module Workarea
   module Klarna
-    VERSION = "1.0.0.pre".freeze
+    VERSION = "1.0.0.beta1".freeze
   end
 end

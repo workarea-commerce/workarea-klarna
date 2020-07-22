@@ -13,12 +13,14 @@ require 'workarea/klarna/gateway/capture_request'
 require 'workarea/klarna/gateway/refund_request'
 require 'workarea/klarna/gateway/cancel_request'
 require 'workarea/klarna/gateway/release_request'
+require 'workarea/klarna/bogus_gateway'
 
 module Workarea
   module Klarna
     class << self
       def gateway
-        Workarea::Klarna::Gateway.new
+        return Klarna::BogusGateway.new unless Workarea.config.load_klarna
+        Klarna::Gateway.new
       end
     end
   end

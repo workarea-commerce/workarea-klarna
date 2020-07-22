@@ -1,1 +1,2 @@
-= javascript_include_tag 'https://x.klarnacdn.net/kp/lib/v1/api.js'
+- if Workarea.config.load_klarna
+  = javascript_include_tag 'https://x.klarnacdn.net/kp/lib/v1/api.js'

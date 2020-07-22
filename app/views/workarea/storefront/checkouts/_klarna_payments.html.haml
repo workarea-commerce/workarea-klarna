@@ -1,6 +1,6 @@
 - if step.offer_klarna_payments?
   .hidden{ data: { klarna_session: step.klarna_data.to_json } }
-  = hidden_field_tag 'klarna[authorization_token]', nil, id: 'klarna_authorization_token'
+  = hidden_field_tag 'klarna[authorization_token]', step.payment.klarna&.authorization_token, id: 'klarna_authorization_token'
 
   - step.klarna_session.payment_method_categories.each do |category|
     - identifier = category['identifier']

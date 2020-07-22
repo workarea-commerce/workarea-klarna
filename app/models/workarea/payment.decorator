@@ -15,6 +15,7 @@ module Workarea
         :authorization_token_expires_at,
         :payment_method_category
       )
+
       save
     end
 
