@@ -3,15 +3,42 @@ module Workarea
     module Klarna
       Factories.add(self)
 
-      def configure_klarna_countries
-        Workarea.configure do |config|
-          config.countries << Country['DE'] # Germany
-          config.countries << Country['NZ'] # New Zealand
-          config.countries << Country['BR'] # Brazil
+      def create_klarna_session(overrides = {})
+        attributes = {
+          session_id: SecureRandom.hex(10),
+          client_token: SecureRandom.hex(10),
+          payment_method_categories: [
+            { name: 'Pay in 30 days', identifier: 'pay_later' }
+          ]
+        }.merge(overrides)
+
+        Workarea::Payment::KlarnaSession.create!(attributes)
+      end
+
+      def klarna_gateway_class
+        if Workarea.config.load_klarna
+          Workarea::Klarna::Gateway
+        else
+          Workarea::Klarna::BogusGateway
         end
       end
 
-      def german_address
+      def configure_klarna_data
+        Workarea.configure do |config|
+          config.countries << Country['DE'] # Germany
+          config.countries << Country['BR'] # Brazil
+          config.klarna_na_username = 'na_user'
+          config.klarna_na_password = 'na_password'
+          config.klarna_eur_username = 'eur_user'
+          config.klarna_eur_password = 'eur_password'
+        end
+      end
+
+      def supported_na_address
+        factory_defaults :shipping_address
+      end
+
+      def supported_eur_address
         {
           first_name: 'Ragnall',
           last_name: 'Koch',
@@ -23,19 +50,7 @@ module Workarea
         }
       end
 
-      def kiwi_address
-        {
-          first_name: 'Ronald',
-          last_name: 'King',
-          street: '10-18 Adelaide Road',
-          postal_code: '6021',
-          city: 'Mount Cook',
-          region: 'WGN',
-          country: 'NZ'
-        }
-      end
-
-      def brazilian_address
+      def unsupported_address
         {
           first_name: 'Ronaldo',
           last_name: 'Palhaco',

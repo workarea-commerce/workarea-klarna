@@ -5,7 +5,6 @@ module Workarea
     class Gateway
       class CaptureRequestTest < TestCase
         def test_body
-
         end
       end
     end

@@ -2,7 +2,7 @@ require 'test_helper'
 
 module Workarea
   class KlarnaPaymentTest < TestCase
-    setup :configure_klarna_countries
+    setup :configure_klarna_data
 
     def test_set_klarna
       payment = Payment.new
@@ -31,12 +31,12 @@ module Workarea
 
       refute(payment.eligible_for_klarna?)
 
-      payment.build_address(brazilian_address)
+      payment.build_address(unsupported_address)
 
       assert(payment.address.valid?)
       refute(payment.eligible_for_klarna?)
 
-      payment.address.attributes = german_address
+      payment.address.attributes = supported_eur_address
 
       assert(payment.address.valid?)
       assert(payment.eligible_for_klarna?)

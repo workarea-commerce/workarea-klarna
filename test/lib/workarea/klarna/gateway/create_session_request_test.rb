@@ -5,7 +5,6 @@ module Workarea
     class Gateway
       class CreateSessionRequestTest < TestCase
         def test_body
-
         end
       end
     end

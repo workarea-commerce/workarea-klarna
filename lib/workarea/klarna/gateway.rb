@@ -65,9 +65,9 @@ module Workarea
         response = send_request(request)
 
         ActiveMerchant::Billing::Response.new(
-            response.success?,
-            response.message,
-            response.params
+          response.success?,
+          response.message,
+          response.params
         )
       end
 

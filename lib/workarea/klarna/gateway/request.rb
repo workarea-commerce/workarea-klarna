@@ -73,7 +73,7 @@ module Workarea
 
         def rails_credentials
           return {} unless continent_key.present?
-          Rails.application.credentials.klarna[continent_key.downcase.to_sym] || {}
+          Rails.application.credentials.klarna.try(:[], continent_key.downcase.to_sym) || {}
         end
 
         def order_id

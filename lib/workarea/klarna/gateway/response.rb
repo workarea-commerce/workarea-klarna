@@ -28,8 +28,8 @@ module Workarea
           if success?
             I18n.t('workarea.klarna.gateway.response.success', summary: request.summary)
           else
-            errors = body.fetch(:error_messages, []).join('. ')
-            I18n.t('workarea/klarna.gateway.response.failure', summary: errors)
+            errors = body.fetch('error_messages', []).join('. ')
+            I18n.t('workarea.klarna.gateway.response.failure', summary: errors)
           end
         end
       end
