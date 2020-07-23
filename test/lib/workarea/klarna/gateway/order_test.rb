@@ -4,71 +4,9 @@ module Workarea
   module Klarna
     class Gateway
       class OrderTest < TestCase
-        setup :supporting_data
-
-        def supporting_data
-          create_tax_category(
-            name: 'Sales Tax',
-            code: '001',
-            rates: [
-              { percentage: 0.07, country: 'US', region: 'PA' },
-              { percentage: 0.09, country: 'DE', region: 'BY' }
-            ]
-          )
-
-          @product = create_product(
-            id: 'INT_PRODUCT',
-            name: 'Integration Product',
-            variants: [{ sku: 'SKU',  tax_code: '001', regular: 5.to_m }]
-          )
-
-          @category = create_category(name: 'Pants', product_ids: [@product.id])
-          create_taxon(name: 'Pants', navigable: @category)
-
-          create_order_total_discount
-
-          card = create_saved_credit_card
-          profile = card.profile
-          profile.update!(store_credit: 3.to_m)
-
-          user = Workarea::User.find(profile.reference)
-
-          @order = create_order(
-            user_id: user.id,
-            email: user.email,
-            items: [{
-                product_id: 'INT_PRODUCT',
-                sku: 'SKU',
-                quantity: 2,
-                via: @category.to_gid_param
-            }]
-          )
-
-          @payment = create_payment(
-            id: @order.id,
-            address: supported_na_address,
-            store_credit: { amount: 3.to_m }
-          )
-
-          @shipping = create_shipping(
-            order_id: @order.id,
-            address: supported_na_address
-          )
-
-          @shipping.apply_shipping_service(
-            name: 'Ground',
-            tax_code: '001',
-            base_price: 7.to_m
-          )
-        end
-
-        def price_order
-          Workarea::Pricing.perform(@order, @shipping)
-        end
+        setup :create_supporting_data_for_klarna
 
         def test_to_h_for_na
-          price_order
-
           result = Order.new(@order).to_h
           assert(result.present?)
 
@@ -135,7 +73,7 @@ module Workarea
           @payment.set_address(supported_eur_address)
           @shipping.set_address(supported_eur_address)
 
-          price_order
+          Workarea::Pricing.perform(@order, @shipping)
 
           result = Order.new(@order).to_h
           assert(result.present?)

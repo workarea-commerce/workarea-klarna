@@ -40,7 +40,7 @@ WORKAREA.registerModule('klarnaWidget', (function () {
                         // remove option and render message
                     }
                 }
-            )
+            );
         },
 
         setupWidget = function(session, payment) {
@@ -59,7 +59,7 @@ WORKAREA.registerModule('klarnaWidget', (function () {
                             .remove();
                     }
                 }
-            )
+            );
         },
 
         setupListener = function($form, session) {
@@ -87,6 +87,5 @@ WORKAREA.registerModule('klarnaWidget', (function () {
             setupListener($container.closest('form'), session);
         };
 
-
-    window.klarnaAsyncCallback = init
+    window.klarnaAsyncCallback = init;
 }()));
