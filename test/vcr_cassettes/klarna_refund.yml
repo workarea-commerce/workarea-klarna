@@ -1,0 +1,60 @@
+---
+http_interactions:
+- request:
+    method: post
+    uri: https://api-na.playground.klarna.com//ordermanagement/v1/orders/1dab0505-d1d5-1041-ac57-5ffda5af139c/refunds
+    body:
+      encoding: UTF-8
+      string: '{"refunded_amount":500}'
+    headers:
+      User-Agent:
+      - Workarea/3.5.16
+      Authorization:
+      - Basic Zm9vOmJhcg==
+      Content-Type:
+      - application/json
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      Accept:
+      - "*/*"
+  response:
+    status:
+      code: 201
+      message: ''
+    headers:
+      Date:
+      - Thu, 23 Jul 2020 23:31:40 GMT
+      Content-Length:
+      - '0'
+      Connection:
+      - keep-alive
+      Server:
+      - openresty
+      Location:
+      - https://api-na.playground.klarna.com/ordermanagement/v1/orders/1dab0505-d1d5-1041-ac57-5ffda5af139c/refunds/2aca2466-c064-4331-a8f1-ee793413dfbf
+      Refund-Id:
+      - 2aca2466-c064-4331-a8f1-ee793413dfbf
+      Transaction-Id:
+      - ee534ddc-49f9-41ab-ab9c-ab5d606ac047
+      X-Content-Type-Options:
+      - nosniff
+      X-Xss-Protection:
+      - 1; mode=block
+      Cache-Control:
+      - no-cache, no-store, max-age=0, must-revalidate
+      Pragma:
+      - no-cache
+      Expires:
+      - '0'
+      X-Frame-Options:
+      - DENY
+      Klarna-Correlation-Id:
+      - ddc4b073-0d39-4a4d-a073-9ec3f5fd3607
+      Strict-Transport-Security:
+      - max-age=31536000; includeSubDomains
+    body:
+      encoding: UTF-8
+      string: ''
+    http_version: 
+  recorded_at: Thu, 23 Jul 2020 23:31:41 GMT
+recorded_with: VCR 2.9.3

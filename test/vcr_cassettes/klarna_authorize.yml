@@ -1,0 +1,62 @@
+---
+http_interactions:
+- request:
+    method: post
+    uri: https://api-na.playground.klarna.com//payments/v1/authorizations/31ae5ab6-d4d5-145f-b71b-36cd8404c5ba/order
+    body:
+      encoding: UTF-8
+      string: '{"purchase_country":"US","purchase_currency":"USD","locale":"en","order_amount":1412,"order_tax_amount":112,"order_lines":[{"name":"Integration
+        Product","type":"physical","reference":"SKU","quantity":2,"unit_price":500,"total_amount":1000,"product_url":"http://www.example.com/products/integration-product","product_identifiers":{"category_path":"Home
+        \u003e Pants"}},{"name":"Shipping","type":"shipping_fee","quantity":1,"unit_price":700,"total_amount":700},{"name":"Order
+        Discounts","type":"discount","quantity":1,"unit_price":-100,"total_amount":-100},{"name":"Tax","type":"sales_tax","quantity":1,"unit_price":112,"total_amount":112},{"name":"Store
+        Credit","type":"store_credit","quantity":1,"unit_price":-300,"total_amount":-300}],"billing_address":{"given_name":"Ben","family_name":"Crouse","email":"user0@workarea.com","street_address":"22
+        S. 3rd St.","street_address2":"Second Floor","postal_code":"19106","city":"Philadelphia","region":"PA","phone":null,"country":"US"},"shipping_address":{"given_name":"Ben","family_name":"Crouse","email":"user0@workarea.com","street_address":"22
+        S. 3rd St.","street_address2":"Second Floor","postal_code":"19106","city":"Philadelphia","region":"PA","phone":null,"country":"US"},"merchant_urls":{"confirmation":"http://www.example.com/checkout/confirmation"},"merchant_reference1":"A110ADB728","auto_capture":false}'
+    headers:
+      User-Agent:
+      - Workarea/3.5.16
+      Authorization:
+      - Basic Zm9vOmJhcg==
+      Content-Type:
+      - application/json
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      Accept:
+      - "*/*"
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Date:
+      - Thu, 23 Jul 2020 23:52:38 GMT
+      Content-Type:
+      - application/json
+      Transfer-Encoding:
+      - chunked
+      Connection:
+      - keep-alive
+      Server:
+      - openresty
+      Vary:
+      - Accept-Encoding
+      Render-Time:
+      - '76'
+      Klarna-Correlation-Id:
+      - d0099594-4ee1-4f37-bc58-66cdb876b33a
+      Strict-Transport-Security:
+      - max-age=31536000; includeSubDomains
+    body:
+      encoding: ASCII-8BIT
+      string: |-
+        {
+          "order_id" : "48ab3d6b-e3b5-1f2b-8544-0469e87e9e1e",
+          "redirect_url" : "https://klarna-payments-na.playground.klarna.com/payments/v1/sessions/f9ac7fa6-52b9-13c9-8125-df870c1d8c2c/redirect",
+          "fraud_status" : "ACCEPTED",
+          "authorized_payment_method" : {
+            "type" : "invoice"
+          }
+        }
+    http_version: 
+  recorded_at: Thu, 23 Jul 2020 23:52:38 GMT
+recorded_with: VCR 2.9.3

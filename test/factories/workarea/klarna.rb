@@ -34,6 +34,15 @@ module Workarea
         end
       end
 
+      def enable_klarna
+        Workarea.config.load_klarna = true
+
+        # change these to real credentials if you ever want to regenerate
+        # the cassettes.
+        Workarea.config.klarna_na_username = 'foo'
+        Workarea.config.klarna_na_password = 'bar'
+      end
+
       def supported_na_address
         factory_defaults :shipping_address
       end
