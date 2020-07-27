@@ -115,7 +115,7 @@ module Workarea
               .select { |pa| pa.data['order_item_id'].to_s == item.id.to_s }
               .sum(&:amount)
 
-          tax_rate = (tax_amount.cents * 1.0 / item.total_price.cents).round(2) * 10000
+          tax_rate = (tax_amount.cents.to_f / item.total_price.cents).round(2) * 10000
 
           [tax_amount.cents, tax_rate.to_i]
         end
@@ -192,7 +192,7 @@ module Workarea
           if payment.respond_to?(:gift_card) &&
             [payment.gift_card].compact
           elsif payment.respond_to?(:gift_cards)
-            payment.gift_cards.sum(&:amount)
+            payment.gift_cards
           else
             []
           end

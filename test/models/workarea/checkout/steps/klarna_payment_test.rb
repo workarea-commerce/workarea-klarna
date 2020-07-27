@@ -68,7 +68,7 @@ module Workarea
           assert(payment.klarna.authorization_token.present?)
 
           step.update
-          assert(payment.klarna.nil?)
+          assert_nil(payment.klarna)
 
           payment.address = nil
           refute(step.update)

@@ -11,6 +11,8 @@ en:
         klarna_payment_expired: Your Klarna payment approval has expired.
       orders:
         klarna: Klarna
+      widget:
+        invalid_payment: The payment selected is not valid for this order. Please select a different payment option.
     klarna:
       gateway:
         request:

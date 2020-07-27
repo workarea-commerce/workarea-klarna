@@ -4,7 +4,7 @@ module Workarea
       class Klarna
         include OperationImplementation
 
-        def complete! # TODO
+        def complete!
           transaction.response =
             Workarea::Klarna.gateway.refund(tender, transaction.amount)
         end

@@ -33,11 +33,19 @@ WORKAREA.registerModule('klarnaWidget', (function () {
                         .removeAttr('disabled')
                         .text(I18n.t('workarea.storefront.checkouts.place_order'));
 
-                        // render message
                     } else {
                         setupListener($form, session);
 
-                        // remove option and render message
+                        $selectedPayment
+                            .closest('.checkout-payment__primary-method--klarna')
+                            .remove();
+
+                        $form.find('input[name=payment]').first().trigger('click');
+
+                        WORKAREA.messages.insertMessage(
+                            I18n.t('workarea.storefront.widget.invalid_payment'),
+                            'error'
+                        );
                     }
                 }
             );
