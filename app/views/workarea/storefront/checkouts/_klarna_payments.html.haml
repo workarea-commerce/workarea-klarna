@@ -1,0 +1,22 @@
+- if step.offer_klarna_payments?
+  .hidden{ data: { klarna_session: step.klarna_data.to_json } }
+  = hidden_field_tag 'klarna[authorization_token]', step.payment.klarna&.authorization_token, id: 'klarna_authorization_token'
+
+  - step.klarna_session.payment_method_categories.each do |category|
+    - identifier = category['identifier']
+    .checkout-payment__primary-method.checkout-payment__primary-method--klarna.checkout-payment__primary-method--new{ class: "checkout-payment__primary-method--klarna_#{identifier} #{step.klarna_payment_category_selected?(identifier) ? 'checkout-payment__primary-method--selected' : nil}" }
+      .button-property
+        .value{ role: 'radiogroup', aria: { labelledby: 'aria_payment_radiogroup' } }
+          = radio_button_tag 'payment', "klarna_#{identifier}", step.klarna_payment_category_selected?(identifier), data: { payment_category: identifier, analytics: checkout_payment_selected_analytics_data("klarna_#{identifier}").to_json }
+
+        = label_tag 'payment[klarna]', nil, class: 'button-property__name' do
+          = image_tag(category['asset_urls']['standard'], class: "payment-icon payment-icon--#{identifier.dasherize}", title: category['name'])
+          %span.button-property__text= category['name']
+
+      - if step.klarna_payment_category_selected?(identifier) && !step.klarna_expired?
+        .checkout-payment__primary-method-edit= t('workarea.workarea.storefront.checkouts.klarna_payment_received')
+      - else
+        - if step.klarna_expired?
+          .checkout-payment__primary-method-edit= t('workarea.workarea.storefront.checkouts.klarna_payment_expired')
+
+        .checkout-payment__primary-method-edit{ data: { klarna_payment: identifier }, id: "klarna-payment--#{identifier}"  }

@@ -1,0 +1,9 @@
+module Workarea
+  decorate Storefront::Checkout::PlaceOrderController, with: :klarna do
+    private
+
+    def finished_checkout_destination
+      current_checkout.payment.redirect_url || super
+    end
+  end
+end

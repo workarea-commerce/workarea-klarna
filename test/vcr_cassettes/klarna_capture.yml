@@ -1,0 +1,60 @@
+---
+http_interactions:
+- request:
+    method: post
+    uri: https://api-na.playground.klarna.com//ordermanagement/v1/orders/1dab0505-d1d5-1041-ac57-5ffda5af139c/captures
+    body:
+      encoding: UTF-8
+      string: '{"captured_amount":500}'
+    headers:
+      User-Agent:
+      - Workarea/3.5.16
+      Authorization:
+      - Basic Zm9vOmJhcg==
+      Content-Type:
+      - application/json
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      Accept:
+      - "*/*"
+  response:
+    status:
+      code: 201
+      message: ''
+    headers:
+      Date:
+      - Thu, 23 Jul 2020 23:29:51 GMT
+      Content-Length:
+      - '0'
+      Connection:
+      - keep-alive
+      Server:
+      - openresty
+      Location:
+      - https://api-na.playground.klarna.com/ordermanagement/v1/orders/1dab0505-d1d5-1041-ac57-5ffda5af139c/captures/eabd454d-c2cc-4139-8438-27635e93e666
+      Transaction-Id:
+      - 0a4de76d-a048-45d2-a2b3-3b4cd8704640
+      Capture-Id:
+      - eabd454d-c2cc-4139-8438-27635e93e666
+      X-Content-Type-Options:
+      - nosniff
+      X-Xss-Protection:
+      - 1; mode=block
+      Cache-Control:
+      - no-cache, no-store, max-age=0, must-revalidate
+      Pragma:
+      - no-cache
+      Expires:
+      - '0'
+      X-Frame-Options:
+      - DENY
+      Klarna-Correlation-Id:
+      - cf47e15c-4798-481d-b423-f052d409fddb
+      Strict-Transport-Security:
+      - max-age=31536000; includeSubDomains
+    body:
+      encoding: UTF-8
+      string: ''
+    http_version: 
+  recorded_at: Thu, 23 Jul 2020 23:29:51 GMT
+recorded_with: VCR 2.9.3

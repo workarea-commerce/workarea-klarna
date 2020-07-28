@@ -1,1 +1,30 @@
 en:
+  workarea:
+    admin:
+      orders:
+        tenders:
+          klarna:
+            title: Klarna
+    storefront:
+      checkouts:
+        klarna_payment_received: Your Klarna payment has been approved. Click 'Place Order' to purchase.
+        klarna_payment_expired: Your Klarna payment approval has expired.
+      orders:
+        klarna: Klarna
+      widget:
+        invalid_payment: The payment selected is not valid for this order. Please select a different payment option.
+    klarna:
+      gateway:
+        request:
+          base: 'Klarna request'
+          create_session: 'Klarna session creation'
+          update_session: 'Klarna session update'
+          place_order: 'Klarna payment authorization for %{amount}'
+          capture: 'Klarna payment capture for %{amount}'
+          refund: 'Klarna payment refund for %{amount}'
+          cancel: 'Klarna order cancellation'
+          release: 'Klarna order authorization release'
+        response:
+          success: '%{summary} was successful'
+          failure: Request to Klarna was not successful. %{summary}
+          unsupported_continent: The continent "%{continent}" associated to this request is either unknown or not supported.

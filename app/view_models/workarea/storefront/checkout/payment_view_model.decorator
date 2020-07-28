@@ -1,0 +1,41 @@
+module Workarea
+  decorate Storefront::Checkout::PaymentViewModel, with: :klarna do
+    def klarna_session
+      @klarna_session ||=
+        Payment::KlarnaSession.find_or_initialize_by(id: order.id)
+    end
+
+    def offer_klarna_payments?
+      payment.eligible_for_klarna? &&
+        klarna_session.client_token.present?
+    end
+
+    def klarna_data
+      @klarna_data ||= klarna_session
+        .attributes
+        .slice('client_token', 'payment_method_categories')
+        .merge(
+          order: Klarna::Gateway::Order
+                  .new(order, payment: payment, shippings: shippings)
+                  .to_h
+                  .except(:merchant_urls)
+        )
+    end
+
+    def klarna_selected?
+      payment.klarna&.authorization_token.present?
+    end
+
+    def klarna_payment_category_selected?(category)
+      klarna_selected? && payment.klarna.payment_method_category == category
+    end
+
+    def klarna_expired?
+      klarna_selected? && payment.klarna.authorization_token_expired?
+    end
+
+    def using_new_card?
+      super && !klarna_selected?
+    end
+  end
+end

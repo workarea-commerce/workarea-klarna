@@ -1,0 +1,22 @@
+module Workarea
+  decorate Checkout::Steps::Payment, with: :klarna do
+    private
+    # decorating this method to inject this logic at the right part of
+    # the payment step without redefining all of #update.
+    def set_credit_card(params)
+      payment_type = params[:payment]
+      auth_token = params.fetch(:klarna, {})[:authorization_token]
+
+
+      unless payment_type.to_s.starts_with?('klarna') && auth_token.present?
+        payment.clear_klarna
+        return super
+      end
+
+      payment.set_klarna(
+        authorization_token: auth_token,
+        payment_method_category: payment_type.sub('klarna_', '')
+      )
+    end
+  end
+end

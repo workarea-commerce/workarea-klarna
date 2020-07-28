@@ -1,0 +1,61 @@
+---
+http_interactions:
+- request:
+    method: post
+    uri: https://api-na.playground.klarna.com/payments/v1/sessions
+    body:
+      encoding: UTF-8
+      string: '{"purchase_country":"US","purchase_currency":"USD","locale":"en","order_amount":1000,"order_tax_amount":0,"order_lines":[{"name":"Test
+        Product","type":"physical","reference":"SKU","quantity":2,"unit_price":500,"total_amount":1000,"product_url":"http://www.example.com/products/test-product","product_identifiers":{}},{"name":"Tax","type":"sales_tax","quantity":1,"unit_price":0,"total_amount":0}],"merchant_urls":{"confirmation":"http://www.example.com/checkout/confirmation"},"merchant_reference1":"D461D6C714"}'
+    headers:
+      User-Agent:
+      - Workarea/3.5.16
+      Authorization:
+      - Basic Zm9vOmJhcg==
+      Content-Type:
+      - application/json
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      Accept:
+      - "*/*"
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Date:
+      - Fri, 24 Jul 2020 00:09:26 GMT
+      Content-Type:
+      - application/json
+      Transfer-Encoding:
+      - chunked
+      Connection:
+      - keep-alive
+      Server:
+      - openresty
+      Vary:
+      - Accept-Encoding
+      Render-Time:
+      - '25'
+      Klarna-Correlation-Id:
+      - 6c7c56d4-2a0a-4e77-8e35-a48a47019b34
+      Strict-Transport-Security:
+      - max-age=31536000; includeSubDomains
+    body:
+      encoding: ASCII-8BIT
+      string: |-
+        {
+          "session_id" : "94a6dd80-d2a6-1f8b-943b-786cd953a908",
+          "client_token" : "notarealtoken",
+          "payment_method_categories" : [ {
+            "identifier" : "pay_later",
+            "name" : "Pay later in 30 days",
+            "asset_urls" : {
+              "descriptive" : "https://x.klarnacdn.net/payment-method/assets/badges/generic/klarna.svg",
+              "standard" : "https://x.klarnacdn.net/payment-method/assets/badges/generic/klarna.svg"
+            }
+          } ]
+        }
+    http_version:
+  recorded_at: Fri, 24 Jul 2020 00:09:26 GMT
+recorded_with: VCR 2.9.3

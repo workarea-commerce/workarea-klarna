@@ -1,0 +1,13 @@
+module Workarea
+  decorate Storefront::CheckoutsController, with: :klarna_base do
+    private
+
+    def redirect_to_next_step
+      if current_checkout.complete?
+        SetupKlarnaSession.new(current_checkout).perform
+      end
+
+      super
+    end
+  end
+end
