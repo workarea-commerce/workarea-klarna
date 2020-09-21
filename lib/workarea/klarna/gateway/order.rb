@@ -89,15 +89,24 @@ module Workarea
         def format_item(item)
           view_model = Storefront::OrderItemViewModel.new(item)
           breadcrumbs = Navigation::Breadcrumbs.from_global_id(item.via) if item.via.present?
+
           tax_amount, tax_rate = item_tax_data(item)
+          unit_price = item.current_unit_price.cents
+          total_amount = item.total_price.cents
+
+          if include_tax_in_totals?
+            tax_amount_per_item = tax_amount / item.quantity
+            unit_price += tax_amount_per_item
+            total_amount += tax_amount
+          end
 
           {
             name: view_model.product_name,
             type: item.shipping? ? 'physical' : 'digital',
             reference: item.sku,
             quantity: item.quantity,
-            unit_price: item.current_unit_price.cents,
-            total_amount: item.total_price.cents,
+            unit_price: unit_price,
+            total_amount: total_amount,
             total_tax_amount: tax_amount,
             tax_rate: tax_rate,
             product_url: Workarea::Storefront::Engine.routes.url_helpers.product_url(
@@ -132,6 +141,9 @@ module Workarea
                           .sum(&:amount)
                           .cents
 
+          tax_rate = ((shipping_tax * 1.0 / shipping_total).round(2) * 10000).to_i
+          shipping_total += shipping_tax if include_tax_in_totals?
+
           {
             name: 'Shipping',
             type: 'shipping_fee',
@@ -139,7 +151,7 @@ module Workarea
             unit_price: shipping_total,
             total_amount: shipping_total,
             total_tax_amount: shipping_tax,
-            tax_rate: ((shipping_tax * 1.0 / shipping_total).round(2) * 10000).to_i
+            tax_rate: tax_rate
           }
         end
 
@@ -225,7 +237,11 @@ module Workarea
         end
 
         def include_tax_line?
-          payment.address.country.alpha2 == 'US'
+          payment.address.country.continent == 'North America'
+        end
+
+        def include_tax_in_totals?
+          !include_tax_line?
         end
 
         def remove_inline_tax(hash)
