@@ -1,3 +1,18 @@
+Workarea Klarna 1.0.0.beta2 (2020-09-22)
+--------------------------------------------------------------------------------
+
+*   bump version
+
+
+    Matt Duffy
+
+*   Include tax in totals for non-NA continents
+
+
+    Matt Duffy
+
+
+
 Workarea Klarna 1.0.0.beta1 (2020-07-28)
 --------------------------------------------------------------------------------
 
