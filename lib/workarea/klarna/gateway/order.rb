@@ -113,6 +113,10 @@ module Workarea
               host: Workarea.config.host,
               id: view_model.product.slug
             ),
+            image_url: ProductPrimaryImageUrl.new(
+              view_model.catalog_product,
+              :medium_thumb
+            ).url,
             product_identifiers: { category_path: breadcrumbs&.join(' > ') }.compact
           }
         end
