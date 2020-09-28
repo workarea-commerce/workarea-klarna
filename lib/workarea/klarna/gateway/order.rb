@@ -211,18 +211,18 @@ module Workarea
         end
 
         def gift_card_line
-          amount = gift_cards.sum(&:amount)
+          amount = gift_cards.sum(&:amount) || 0.to_m
 
-          return unless amount.to_i.positive?
+          return unless amount.positive?
 
           {
             name: 'Gift Card',
             type: 'gift_card',
             quantity: 1,
-            unit_price: -1 * amount,
+            unit_price: -1 * amount.cents,
             tax_rate: 0,
             total_tax_amount: 0,
-            total_amount: -1 * amount
+            total_amount: -1 * amount.cents
           }
         end
 
