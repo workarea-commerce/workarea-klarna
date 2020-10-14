@@ -1,3 +1,23 @@
+Workarea Klarna 1.0.0 (2020-10-14)
+--------------------------------------------------------------------------------
+
+*   bump version
+
+
+    Matt Duffy
+
+*   Add image url to order item lines
+
+
+    Matt Duffy
+
+*   Fix gift card line for klarna order request
+
+
+    Matt Duffy
+
+
+
 Workarea Klarna 1.0.0.beta2 (2020-09-22)
 --------------------------------------------------------------------------------
 
