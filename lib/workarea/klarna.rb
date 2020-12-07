@@ -22,6 +22,16 @@ module Workarea
         return Klarna::BogusGateway.new unless Workarea.config.load_klarna
         Klarna::Gateway.new
       end
+
+      def on_site_messaging_client_id
+        ENV["WORKAREA_KLARNA_ON_SITE_MESSAGING_CLIENT_ID"].presence ||
+          Rails.application.credentials.klarna.try(:[], :on_site_messaging_client_id) ||
+          Workarea.config.klarna_on_site_messaging_client_id
+      end
+
+      def on_site_messaging?
+        on_site_messaging_client_id.present?
+      end
     end
   end
 end

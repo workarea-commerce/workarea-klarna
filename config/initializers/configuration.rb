@@ -12,7 +12,7 @@ Workarea.configure do |config|
   # This controls whether requests go to the live or sandbox API endpoints.
   config.klarna_playground = !Rails.env.production?
 
-  # Continents supported by KLarna and keys used to generate paths to
+  # Continents supported by Klarna and keys used to generate paths to
   # credentials via environment variables and/or rails credentials. Also used
   # to get the keys for the subdomain configuration.
   config.klarna_continent_keys = {
@@ -28,5 +28,13 @@ Workarea.configure do |config|
     'NA' => 'api-na',
     'OC' => 'api-oc',
     'AUS' => 'api-oc'
+  }
+
+  # Subdomains to use for On-Site Messaging
+  config.klarna_on_site_messaging_subdomains = {
+    'EUR' => 'eu-library',
+    'NA' => 'na-library',
+    'OC' => 'oc-library',
+    'AUS' => 'oc-library'
   }
 end
