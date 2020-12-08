@@ -1,0 +1,7 @@
+module Workarea
+  decorate Storefront::PagesController, with: :klarna do
+    def klarna
+      head :not_found unless Klarna.on_site_messaging?
+    end
+  end
+end

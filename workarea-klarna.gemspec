@@ -9,7 +9,7 @@ Gem::Specification.new do |spec|
   spec.version     = Workarea::Klarna::VERSION
   spec.authors     = ["Matt Duffy"]
   spec.email       = ["mduffy@workarea.com"]
-  spec.homepage    = "https://www.workarea.com"
+  spec.homepage    = "https://github.com/workarea-commerce/workarea-klarna"
   spec.summary     = "Klarna API integration for the Workarea Commerce Platform."
   spec.description = "Klarna Payments and Order Management API integration with Workarea Commerce."
   spec.license     = "Business Software License"
