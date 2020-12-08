@@ -32,6 +32,8 @@ require 'workarea/klarna/version'
 
 desc "Release version #{Workarea::Klarna::VERSION} of the gem"
 task :release do
+  host = "https://#{ENV['BUNDLE_GEMS__WEBLINC__COM']}@gems.weblinc.com"
+
   Rake::Task['workarea:changelog'].execute
   system 'git add CHANGELOG.md'
   system 'git commit -m "Update CHANGELOG"'
@@ -41,6 +43,7 @@ task :release do
 
   system "gem build workarea-klarna.gemspec"
   system "gem push workarea-klarna-#{Workarea::Klarna::VERSION}.gem"
+  system "gem push workarea-klarna-#{Workarea::Klarna::VERSION}.gem --host #{host}"
   system "rm workarea-klarna-#{Workarea::Klarna::VERSION}.gem"
 end
 
