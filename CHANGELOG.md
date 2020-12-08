@@ -1,3 +1,23 @@
+Workarea Klarna 1.1.0.beta1 (2020-12-08)
+--------------------------------------------------------------------------------
+
+*   bump version for beta release
+
+
+    Matt Duffy
+
+*   add pushing to weblinc gem server
+
+
+    Matt Duffy
+
+*   Add On-Site Messaging support
+
+
+    Matt Duffy
+
+
+
 Workarea Klarna 1.0.0 (2020-10-14)
 --------------------------------------------------------------------------------
 
